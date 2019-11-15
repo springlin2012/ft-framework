@@ -1,0 +1,14 @@
+/target/
+/.settings/
+/bin/
+/logs/
+/.dubbo/
+.project
+.classpath
+*.iml
+
+.DS_Store
+/.ides/
+.idea/workspace.xml
+framework-core/src/test/
+framework-web/src/
