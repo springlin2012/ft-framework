@@ -7,8 +7,10 @@
 .classpath
 *.iml
 
+
 .DS_Store
 /.ides/
-.idea/workspace.xml
+.idea/*
 framework-core/src/test/
 framework-web/src/
+

@@ -16,8 +16,6 @@ package com.kltb.framework.idmaker;
  * limitations under the License.
  */
 
-import com.kltb.commons.log.LogManager;
-
 import java.io.Serializable;
 import java.net.NetworkInterface;
 import java.nio.BufferUnderflowException;
@@ -46,8 +44,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @mongodb.driver.manual core/object-id ObjectId
  */
 public final class ObjectId implements Comparable<ObjectId>, Serializable {
-    public static final LogManager.Logger logger = LogManager.getLogger(ObjectId.class);
-
     private static final long serialVersionUID = -5679414764889304134L;
 
     private static final int LOW_ORDER_THREE_BYTES = 0x00ffffff;
@@ -489,7 +485,7 @@ public final class ObjectId implements Comparable<ObjectId>, Serializable {
         } catch (Throwable t) {
             // exception sometimes happens with IBM JVM, use random
             machinePiece = (new SecureRandom().nextInt());
-            logger.error("exception sometimes happens with IBM JVM, use random");
+            throw new RuntimeException("exception sometimes happens with IBM JVM, use random");
         }
         machinePiece = machinePiece & LOW_ORDER_THREE_BYTES;
         return machinePiece;
@@ -509,7 +505,7 @@ public final class ObjectId implements Comparable<ObjectId>, Serializable {
 
         } catch (Throwable t) {
             processId = (short) new SecureRandom().nextInt();
-            logger.warn("Failed to get process identifier from JMX, using random number instead", t);
+            throw new RuntimeException("Failed to get process identifier from JMX, using random number instead");
         }
 
         return processId;

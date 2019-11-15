@@ -4,9 +4,10 @@ import com.github.zkclient.IZkStateListener;
 import com.github.zkclient.ZkClient;
 import com.github.zkclient.exception.ZkBadVersionException;
 import com.github.zkclient.exception.ZkNodeExistsException;
-import com.kltb.commons.log.LogManager;
 import org.apache.zookeeper.Watcher.Event.KeeperState;
 import org.apache.zookeeper.data.Stat;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 import java.net.InetAddress;
@@ -18,7 +19,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class WorkerIdZookeeperRegistry implements WorkerIdRegistry {
-	public static final LogManager.Logger logger = LogManager.getLogger(WorkerIdZookeeperRegistry.class);
+	public static final Logger logger  = LoggerFactory.getLogger(WorkerIdZookeeperRegistry.class);
 
 	private static final String ROOT = "/SnowFlakeId";
 	private static final Charset UTF8 = Charset.forName("UTF-8");
