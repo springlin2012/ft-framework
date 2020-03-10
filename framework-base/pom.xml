@@ -9,6 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.kltb.framework</groupId>
+    <version>1.1-SNAPSHOT</version>
     <artifactId>ftframework-base</artifactId>
     <name>ftframework-base</name>
     <packaging>jar</packaging>
