@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @descript: 密钥工具类
+ * @descript: 密钥获取工具类
  * @auth: lichunlin
  * @date: 2019/11/07.
  */

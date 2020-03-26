@@ -7,15 +7,16 @@ package com.kltb.framework.demo;
 
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
-import com.kltb.framework.common.dto.SecurityKeyInfo;
-import com.kltb.framework.common.dto.ServiceRequest;
-import com.kltb.framework.common.dto.ServiceResponse;
+import com.kltb.framework.common.entity.SKeyInfo;
+import com.kltb.framework.common.entity.ServiceRequest;
+import com.kltb.framework.common.entity.ServiceResponse;
 import com.kltb.framework.common.enums.EncryptTypeEnum;
 import com.kltb.framework.sdk.exception.EncodeDecodeException;
-import com.kltb.framework.sdk.security.SPAcceptorHelper;
 import com.kltb.framework.sdk.security.SPHelper;
+import com.kltb.framework.sdk.security.MSPHelper;
 import com.kltb.framework.sdk.util.DateUtil;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -26,22 +27,30 @@ import java.util.Map;
 public class SecurityDemo {
 
     public static void main(String[] args) {
-        SecurityKeyInfo keyInfo = new SecurityKeyInfo();
-        keyInfo.setPrivateKeyName("app_private_key");
-        keyInfo.setPrivateKeyPath("classpath:keys/app_private_key.pem");
-        keyInfo.setPublicKeyName("platform_public_key");
-        keyInfo.setPublicKeyPath("classpath:keys/platform_public_key.pem");
+        SKeyInfo mKeyInfo = new SKeyInfo();
+        mKeyInfo.setPrivateKeyName("app_private_key");
+        mKeyInfo.setPrivateKeyPath("classpath:keys/app_private_key.pem");
+        mKeyInfo.setPublicKeyName("platform_public_key");
+        mKeyInfo.setPublicKeyPath("classpath:keys/platform_public_key.pem");
+
+        SKeyInfo pKeyInfo = new SKeyInfo();
+        pKeyInfo.setPublicKeyName("app_public_key");
+        pKeyInfo.setPublicKeyPath("classpath:keys/app_public_key.pem");
+        pKeyInfo.setPrivateKeyName("platform_private_key");
+        pKeyInfo.setPrivateKeyPath("classpath:keys/platform_private_key.pem");
 
         try {
-            // request encode,decode
-            SPHelper spHelper = new SPHelper(keyInfo);
-            ServiceRequest encodeServiceReq = encodeDemo(spHelper);
+            // merchant encode
+            MSPHelper mspHelper = new MSPHelper(mKeyInfo);
+//            ServiceRequest encodeServiceReq = encodeDemo(mspHelper);
+            // platform decode
+            SPHelper spHelper = new SPHelper(pKeyInfo);
+//            decodeDemo(spHelper, encodeServiceReq);
 
-            SPAcceptorHelper spAcceptorHelper = new SPAcceptorHelper(keyInfo);
-            decodeDemo(spAcceptorHelper, encodeServiceReq);
-
-            // response encode,decode
-            ServiceResponse response = responseDecodeDemo(spAcceptorHelper);
+            // platform encode
+            ServiceResponse encodeServiceResponse = responseDecodeDemo(spHelper);
+            // merchant decode
+            decodeDemo(mspHelper, encodeServiceResponse);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -49,7 +58,7 @@ public class SecurityDemo {
 
     }
 
-    public static ServiceRequest encodeDemo(SPHelper spHelper) throws EncodeDecodeException {
+    public static ServiceRequest encodeDemo(MSPHelper spHelper) throws EncodeDecodeException {
         ServiceRequest request = new ServiceRequest<Map<String, Object>>();
         request.setMerchantNo("kltb101");
         request.setAppId("10101");
@@ -66,25 +75,33 @@ public class SecurityDemo {
 
         spHelper.encode(request);
         System.out.println("encode -> request data: "+ JSONObject.toJSONString(request));
-
         return request;
     }
 
-    public static void decodeDemo(SPAcceptorHelper spAcceptorHelper, ServiceRequest request) throws EncodeDecodeException {
-        spAcceptorHelper.decode(request);
+    public static void decodeDemo(SPHelper spHelper, ServiceRequest request) throws EncodeDecodeException {
+        spHelper.decode(request);
         System.out.println("decode -> request data: "+ JSONObject.toJSONString(request));
     }
 
 
-    public static ServiceResponse responseDecodeDemo(SPAcceptorHelper spAcceptorHelper) throws EncodeDecodeException {
+    public static ServiceResponse responseDecodeDemo(SPHelper spHelper) throws EncodeDecodeException {
         ServiceResponse response = new ServiceResponse<Map<String, Object>>();
-        response.setResultCode("200");
-        response.setResultMsg("成功");
+        response.setCode("200");
+        response.setMsg("成功");
         response.setResponseDateTime(DateUtil.now());
+        Map<String, Object> bizObj = new HashMap<>();
+        bizObj.put("applyNo", "apply001");
+        bizObj.put("acceptNo", "accept001");
+        response.setBizObject(bizObj);
 
-        spAcceptorHelper.encode(response);
+        spHelper.encode(response);
         System.out.println("decode -> response data: "+ JSONObject.toJSONString(response));
 
         return response;
+    }
+
+    public static void decodeDemo(MSPHelper mspHelper, ServiceResponse response) throws EncodeDecodeException {
+        mspHelper.decode(response);
+        System.out.println("decode -> response data: "+ JSONObject.toJSONString(response));
     }
 }

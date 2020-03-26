@@ -3,7 +3,7 @@
  *
  * @author lichunlin
  */
-package com.kltb.framework.common.dto;
+package com.kltb.framework.common.entity;
 
 import com.kltb.framework.common.enums.EncryptTypeEnum;
 
@@ -11,11 +11,11 @@ import java.io.Serializable;
 
 /**
  * @descript: 安全加解密基础属性类
- * @auth: lichunlin
  * @date: 2019/11/07.
  */
-public class BaseEntity implements Serializable {
+public class BaseReq implements Serializable {
     private static final long serialVersionUID = 1809313804139359530L;
+    protected final String DEFALT_ENCODING_UTF8 = "UTF-8";
 
     /**
      * 加密算法
@@ -28,14 +28,19 @@ public class BaseEntity implements Serializable {
     private String encryptKey;
 
     /**
-     * 业务数据
+     * 加密业务数据
      */
-    private String bizData;
+    private String bizContent;
 
     /**
      * 签名
      */
     private String sign;
+
+    /**
+     * 字符编码
+     */
+    private String encoding;
 
     public EncryptTypeEnum getEncryptType() {
         return encryptType;
@@ -53,12 +58,12 @@ public class BaseEntity implements Serializable {
         this.encryptKey = encryptKey;
     }
 
-    public String getBizData() {
-        return bizData;
+    public String getBizContent() {
+        return bizContent;
     }
 
-    public void setBizData(String bizData) {
-        this.bizData = bizData;
+    public void setBizContent(String bizContent) {
+        this.bizContent = bizContent;
     }
 
     public String getSign() {
@@ -67,5 +72,16 @@ public class BaseEntity implements Serializable {
 
     public void setSign(String sign) {
         this.sign = sign;
+    }
+
+    public String getEncoding() {
+        if (null == encoding || encoding.trim().equals("")) {
+            encoding = DEFALT_ENCODING_UTF8;
+        }
+        return encoding;
+    }
+
+    public void setEncoding(String encoding) {
+        this.encoding = encoding;
     }
 }

@@ -5,80 +5,74 @@
  */
 package com.kltb.framework.sdk.security;
 
-import com.kltb.framework.common.dto.CommonServiceRequest;
-import com.kltb.framework.common.dto.CommonServiceResponse;
-import com.kltb.framework.common.dto.SecurityKeyInfo;
+import com.kltb.framework.common.entity.SKeyInfo;
+import com.kltb.framework.common.entity.ServiceRequest;
+import com.kltb.framework.common.entity.ServiceResponse;
 import com.kltb.framework.common.enums.EncryptTypeEnum;
 import com.kltb.framework.sdk.exception.EncodeDecodeException;
 import com.kltb.framework.sdk.util.AESUtil;
 import com.kltb.framework.sdk.util.AsymmetricUtil;
 import com.kltb.framework.sdk.util.Base64;
 import com.kltb.framework.sdk.util.StringUtil;
-
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
 /**
- * @descript: 安全协议请求辅助类
- * @auth: lichunlin
+ * @descript: 安全协议接收辅助类
  * @date: 2019/11/07.
  */
-public class SPHelper extends SecurityProtocol{
+public class SPHelper extends SecurityProtocol {
 
-    public SPHelper(SecurityKeyInfo securityKeyInfo) throws NoSuchAlgorithmException, InvalidKeySpecException, IOException {
-        super(securityKeyInfo);
+    public SPHelper(SKeyInfo sKeyInfo) throws NoSuchAlgorithmException, InvalidKeySpecException, IOException {
+        super(sKeyInfo);
     }
 
     /**
-     * 编码
+     * 解码
      *
      * @param request
      * @throws EncodeDecodeException
      */
-    public void encode(CommonServiceRequest request) throws EncodeDecodeException {
-        String encoding = request.getEncoding() == null ? DEFUALT_ENDCODING : request.getEncoding();
-
+    public void decode(ServiceRequest request) throws EncodeDecodeException {
         try {
-            if (StringUtil.isEmpty(request.getBizData())) {
-                request.sign(privateKey);
-            } else {
+            request.verify(publicKey);
+            if (!StringUtil.isEmpty(request.getBizContent())) {
                 if (EncryptTypeEnum.AES.equals(request.getEncryptType())) {
-                    byte[] key = AESUtil.generateKey(128);
-                    request.setEncryptKey(
-                            Base64.byteArrayToBase64(AsymmetricUtil.encryptData(key, publicKey, null)));
-                    byte[] byteBizData = AESUtil.encrypt(key, request.getBizData().getBytes(encoding));
-                    request.setBizData(Base64.byteArrayToBase64(byteBizData));
+                    byte[] key =
+                        AsymmetricUtil.decryptData(Base64.base64ToByteArray(request.getEncryptKey()), privateKey, null);
+                    byte[] byteBizData = AESUtil.decrypt(key, Base64.base64ToByteArray(request.getBizContent()));
+                    request.setBizContent(new String(byteBizData, request.getEncoding()));
                 }
-                request.sign(privateKey);
+
             }
         } catch (Exception e) {
             throw new EncodeDecodeException("请求编码处理失败", e);
         }
     }
 
-
     /**
-     * 解码
+     * 编码
      *
      * @param response
      * @param response
      * @throws EncodeDecodeException
      */
-    public void decode(CommonServiceResponse response) throws EncodeDecodeException {
+    public void encode(ServiceResponse response) throws EncodeDecodeException {
         try {
-            response.verify(publicKey);
-            if (!StringUtil.isEmpty(response.getBizData())) {
+            if (StringUtil.isEmpty(response.getBizContent())) {
+                response.sign(privateKey);
+            } else {
                 if (EncryptTypeEnum.AES.equals(response.getEncryptType())) {
-                    byte[] key = AsymmetricUtil.decryptData(Base64.base64ToByteArray(response.getEncryptKey()),
-                            privateKey, null);
-                    byte[] byteBizData = AESUtil.decrypt(key, Base64.base64ToByteArray(response.getBizData()));
-                    response.setBizData(new String(byteBizData, DEFUALT_ENDCODING));
+                    byte[] key = AESUtil.generateKey(128);
+                    response.setEncryptKey(Base64.byteArrayToBase64(AsymmetricUtil.encryptData(key, publicKey, null)));
+                    byte[] byteBizData = AESUtil.encrypt(key, response.getBizContent().getBytes(DEFUALT_ENDCODING));
+                    response.setBizContent(Base64.byteArrayToBase64(byteBizData));
                 }
-
+                response.sign(privateKey);
             }
         } catch (Exception e) {
-            throw new EncodeDecodeException("返回解码处理处理失败", e);
+            throw new EncodeDecodeException("编码处理失败", e);
         }
     }
 }

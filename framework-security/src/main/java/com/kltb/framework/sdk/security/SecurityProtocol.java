@@ -1,15 +1,8 @@
 package com.kltb.framework.sdk.security;
 
-import com.kltb.framework.common.dto.*;
-import com.kltb.framework.common.enums.EncryptTypeEnum;
-import com.kltb.framework.sdk.exception.EncodeDecodeException;
-import com.kltb.framework.sdk.util.AESUtil;
-import com.kltb.framework.sdk.util.AsymmetricUtil;
-import com.kltb.framework.sdk.util.Base64;
-import com.kltb.framework.sdk.util.StringUtil;
+import com.kltb.framework.common.entity.*;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -25,17 +18,17 @@ public class SecurityProtocol {
     protected static PublicKey publicKey = null;
     protected static PrivateKey privateKey = null;
 
-    public SecurityProtocol(SecurityKeyInfo securityKeyInfo)
+    public SecurityProtocol(SKeyInfo sKeyInfo)
         throws NoSuchAlgorithmException, InvalidKeySpecException, IOException {
-        this.init(securityKeyInfo);
+        this.init(sKeyInfo);
     }
 
-    private void init(SecurityKeyInfo securityKeyInfo)
+    private void init(SKeyInfo sKeyInfo)
         throws NoSuchAlgorithmException, InvalidKeySpecException, IOException {
-        publicKey = AsymmetricKeyHelper.getInstance().readRSAPublicKey(securityKeyInfo.getPublicKeyName(),
-            securityKeyInfo.getPublicKeyPath());
-        privateKey = AsymmetricKeyHelper.getInstance().readRSAPrivateKey(securityKeyInfo.getPrivateKeyName(),
-            securityKeyInfo.getPrivateKeyPath());
+        publicKey = AsymmetricKeyHelper.getInstance().readRSAPublicKey(sKeyInfo.getPublicKeyName(),
+            sKeyInfo.getPublicKeyPath());
+        privateKey = AsymmetricKeyHelper.getInstance().readRSAPrivateKey(sKeyInfo.getPrivateKeyName(),
+            sKeyInfo.getPrivateKeyPath());
     }
 
 }

@@ -13,7 +13,6 @@ import java.util.Arrays;
 
 /**
  * @descript: 对称加密工具类
- * @auth: lichunlin
  * @date: 2019/11/06.
  */
 public class AESUtil {
@@ -190,16 +189,5 @@ public class AESUtil {
         } catch (Exception var3) {
             return null;
         }
-    }
-
-    public static void main(String args[]) throws Exception {
-        byte default_Key[] = generateKey(128);
-        String x = new String(default_Key, "UTF-8");
-        byte Key[] = x.getBytes("UTF-8");
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println((new StringBuilder("***********************************************"))
-            .append(Base64.byteArrayToBase64(default_Key)).toString());
-        System.out.println("**********\u5BC6\u7801\u52A0\u5BC6\u5C0F\u5DE5\u5177   ***************");
-        System.out.print("*** \u8BF7\u8F93\u5165\u5BC6\u7801\u539F\u6587\uFF1A");
     }
 }

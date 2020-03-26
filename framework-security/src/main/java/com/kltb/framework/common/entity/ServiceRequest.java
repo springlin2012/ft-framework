@@ -1,16 +1,22 @@
-package com.kltb.framework.common.dto;
+package com.kltb.framework.common.entity;
 
+import com.alibaba.fastjson.JSONObject;
 import com.kltb.framework.sdk.exception.SignException;
 import com.kltb.framework.sdk.util.AsymmetricUtil;
 import com.kltb.framework.sdk.util.Base64;
 import com.kltb.framework.sdk.util.StringUtil;
+
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.*;
 
-public class CommonServiceRequest extends BaseEntity {
-    private static final long serialVersionUID = 8805190317242772596L;
-
+/**
+ * @descript: 请求
+ * @auth: lichunlin
+ * @date: 2019/11/07.
+ * @param <T>
+ */
+public class ServiceRequest<T> extends BaseReq {
     /**
      * 商户号
      */
@@ -22,11 +28,6 @@ public class CommonServiceRequest extends BaseEntity {
     private String appId;
 
     /**
-     * 编码类型
-     */
-    private String encoding;
-
-    /**
      * 请求时间 yyyy-MM-dd HH:mm:ss
      */
     private String requestDateTime;
@@ -35,50 +36,6 @@ public class CommonServiceRequest extends BaseEntity {
      * 请求流水号,每次请求唯一
      */
     private String requestFlowNo;
-
-    public CommonServiceRequest() {
-        encoding = "UTF-8";
-    }
-
-    public String getAppId() {
-        return appId;
-    }
-
-    public void setAppId(String appId) {
-        this.appId = appId;
-    }
-
-    public String getMerchantNo() {
-        return merchantNo;
-    }
-
-    public void setMerchantNo(String merchantNo) {
-        this.merchantNo = merchantNo;
-    }
-
-    public String getEncoding() {
-        return encoding;
-    }
-
-    public void setEncoding(String encoding) {
-        this.encoding = encoding;
-    }
-
-    public String getRequestDateTime() {
-        return requestDateTime;
-    }
-
-    public void setRequestDateTime(String requestDateTime) {
-        this.requestDateTime = requestDateTime;
-    }
-
-    public String getRequestFlowNo() {
-        return requestFlowNo;
-    }
-
-    public void setRequestFlowNo(String requestFlowNo) {
-        this.requestFlowNo = requestFlowNo;
-    }
 
     /**
      * 生成签名
@@ -97,7 +54,7 @@ public class CommonServiceRequest extends BaseEntity {
     private void doSign(PrivateKey privateKey, String signAlgorithm, boolean isUsingAppConfig) throws SignException {
         try {
             this.setSign(Base64.byteArrayToBase64(
-                AsymmetricUtil.genSignature(this.toSignContent().getBytes(this.encoding), privateKey, signAlgorithm)));
+                AsymmetricUtil.genSignature(this.toSignContent().getBytes(this.getEncoding()), privateKey, signAlgorithm)));
         } catch (Exception var5) {
             throw new SignException("签名失败", var5);
         }
@@ -116,8 +73,8 @@ public class CommonServiceRequest extends BaseEntity {
             .append("=").append(StringUtil.nullToEmpty(this.getRequestDateTime())).append("&").append("encoding")
             .append("=").append(StringUtil.nullToEmpty(this.getEncoding())).append("&").append("encryptKey").append("=")
             .append(StringUtil.nullToEmpty(this.getEncryptKey())).append("&").append("encryptType").append("=")
-            .append(StringUtil.nullToEmpty(this.getEncryptType())).append("&").append("bizData").append("=")
-            .append(StringUtil.nullToEmpty(this.getBizData()));
+            .append(StringUtil.nullToEmpty(this.getEncryptType())).append("&").append("bizContent").append("=")
+            .append(StringUtil.nullToEmpty(this.getBizContent()));
         return sb.toString();
     }
 
@@ -130,7 +87,7 @@ public class CommonServiceRequest extends BaseEntity {
      */
     public boolean verify(PublicKey publicKey) throws SignException {
         try {
-            return AsymmetricUtil.verifySignature(this.toSignContent().getBytes(this.encoding),
+            return AsymmetricUtil.verifySignature(this.toSignContent().getBytes(this.getEncoding()),
                 Base64.base64ToByteArray(this.getSign()), publicKey, null);
         } catch (Exception e) {
             throw new SignException("签名验证失败", e);
@@ -181,9 +138,9 @@ public class CommonServiceRequest extends BaseEntity {
                     }
 
                     key = keyItr.next();
-                } while (!key.equals("appId") && !key.equals("flowNo") && !key.equals("bizContent")
-                    && !key.equals("encoding") && !key.equals("reqDateTime") && !key.equals("reqServiceId")
-                    && !key.equals("encryptKey") && !key.equals("merchantId") && !key.equals("subMerchantId"));
+                } while (!key.equals("appId") && !key.equals("requestFlowNo") && !key.equals("bizContent")
+                    && !key.equals("encoding") && !key.equals("requestDateTime") && !key.equals("requestFlowNo")
+                    && !key.equals("encryptKey") && !key.equals("merchantNo") && !key.equals("subMerchantNo"));
 
                 keyList.add(key);
             }
@@ -191,4 +148,41 @@ public class CommonServiceRequest extends BaseEntity {
             throw new SignException("签名验证失败", e);
         }
     }
+
+    public void setBizObject(T bizObject) {
+        this.setBizContent(JSONObject.toJSONString(bizObject));
+    }
+
+    public String getAppId() {
+        return appId;
+    }
+
+    public void setAppId(String appId) {
+        this.appId = appId;
+    }
+
+    public String getMerchantNo() {
+        return merchantNo;
+    }
+
+    public void setMerchantNo(String merchantNo) {
+        this.merchantNo = merchantNo;
+    }
+
+    public String getRequestDateTime() {
+        return requestDateTime;
+    }
+
+    public void setRequestDateTime(String requestDateTime) {
+        this.requestDateTime = requestDateTime;
+    }
+
+    public String getRequestFlowNo() {
+        return requestFlowNo;
+    }
+
+    public void setRequestFlowNo(String requestFlowNo) {
+        this.requestFlowNo = requestFlowNo;
+    }
+
 }

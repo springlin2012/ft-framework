@@ -1,20 +1,13 @@
-package com.kltb.framework.common.dto;
+package com.kltb.framework.common.entity;
 
-public class SecurityKeyInfo {
-    /**
-     * 平台私钥
-     */
+public class SKeyInfo {
     private String privateKeyName;
     private String privateKeyPath;
 
-    /**
-     * 商户公钥
-     */
     private String publicKeyName;
     private String publicKeyPath;
 
-    public SecurityKeyInfo() {
-    }
+    public SKeyInfo() {}
 
     public String getPrivateKeyPath() {
         return privateKeyPath;
