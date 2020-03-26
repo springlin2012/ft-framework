@@ -6,15 +6,12 @@
 package com.kltb.framework.demo;
 
 import com.alibaba.fastjson.JSONObject;
-import com.google.common.collect.Maps;
 import com.kltb.framework.common.entity.SKeyInfo;
 import com.kltb.framework.common.entity.ServiceRequest;
 import com.kltb.framework.common.entity.ServiceResponse;
 import com.kltb.framework.sdk.exception.EncodeDecodeException;
 import com.kltb.framework.sdk.security.SPHelper;
 import com.kltb.framework.sdk.security.MSPHelper;
-import com.kltb.framework.sdk.util.DateUtil;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -62,7 +59,7 @@ public class SecurityDemo {
         request.setMerchantNo("kltb101");
         request.setAppId("10101");
         request.setRequestFlowNo("10101" + System.currentTimeMillis());
-        Map<String, Object> paramMap = Maps.newHashMap();
+        Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("userName", "张三");
         paramMap.put("certNo", "430426199010208888");
         paramMap.put("mobile", "18676756101");
