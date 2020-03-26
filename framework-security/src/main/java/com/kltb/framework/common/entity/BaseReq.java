@@ -6,6 +6,7 @@
 package com.kltb.framework.common.entity;
 
 import com.kltb.framework.common.enums.EncryptTypeEnum;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 
@@ -14,8 +15,8 @@ import java.io.Serializable;
  * @date: 2019/11/07.
  */
 public class BaseReq implements Serializable {
-    private static final long serialVersionUID = 1809313804139359530L;
-    protected final String DEFALT_ENCODING_UTF8 = "UTF-8";
+    private static final long serialVersionUID = 2508412489595902775L;
+    public static final String DEFALT_ENCODING_UTF8 = "UTF-8";
 
     /**
      * 加密算法
@@ -28,9 +29,9 @@ public class BaseReq implements Serializable {
     private String encryptKey;
 
     /**
-     * 加密业务数据
+     * 字符编码
      */
-    private String bizContent;
+    private String encoding;
 
     /**
      * 签名
@@ -38,11 +39,23 @@ public class BaseReq implements Serializable {
     private String sign;
 
     /**
-     * 字符编码
+     * 加密业务数据
      */
-    private String encoding;
+    private String bizContent;
+
+    /**
+     * 请求时间
+     */
+    private long timestamp;
+
+    public BaseReq() {
+        this.timestamp = System.currentTimeMillis();
+    }
 
     public EncryptTypeEnum getEncryptType() {
+        if (null == this.encryptType) {
+            this.encryptType = EncryptTypeEnum.AES;
+        }
         return encryptType;
     }
 
@@ -75,13 +88,21 @@ public class BaseReq implements Serializable {
     }
 
     public String getEncoding() {
-        if (null == encoding || encoding.trim().equals("")) {
-            encoding = DEFALT_ENCODING_UTF8;
+        if (StringUtils.isEmpty(encoding)) {
+            this.encoding = DEFALT_ENCODING_UTF8;
         }
         return encoding;
     }
 
     public void setEncoding(String encoding) {
         this.encoding = encoding;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 }

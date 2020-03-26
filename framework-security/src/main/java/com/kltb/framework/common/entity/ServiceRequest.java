@@ -28,9 +28,9 @@ public class ServiceRequest<T> extends BaseReq {
     private String appId;
 
     /**
-     * 请求时间 yyyy-MM-dd HH:mm:ss
+     * 版本号
      */
-    private String requestDateTime;
+    private String version;
 
     /**
      * 请求流水号,每次请求唯一
@@ -53,8 +53,8 @@ public class ServiceRequest<T> extends BaseReq {
 
     private void doSign(PrivateKey privateKey, String signAlgorithm, boolean isUsingAppConfig) throws SignException {
         try {
-            this.setSign(Base64.byteArrayToBase64(
-                AsymmetricUtil.genSignature(this.toSignContent().getBytes(this.getEncoding()), privateKey, signAlgorithm)));
+            this.setSign(Base64.byteArrayToBase64(AsymmetricUtil
+                .genSignature(this.toSignContent().getBytes(this.getEncoding()), privateKey, signAlgorithm)));
         } catch (Exception var5) {
             throw new SignException("签名失败", var5);
         }
@@ -67,14 +67,13 @@ public class ServiceRequest<T> extends BaseReq {
      */
     public String toSignContent() {
         StringBuilder sb = new StringBuilder();
-        sb.append("appId").append("=").append(StringUtil.nullToEmpty(this.getAppId())).append("&").append("merchantNo")
-            .append("=").append(StringUtil.nullToEmpty(this.getMerchantNo())).append("&").append("requestFlowNo")
-            .append("=").append(StringUtil.nullToEmpty(this.getRequestFlowNo())).append("&").append("requestDateTime")
-            .append("=").append(StringUtil.nullToEmpty(this.getRequestDateTime())).append("&").append("encoding")
-            .append("=").append(StringUtil.nullToEmpty(this.getEncoding())).append("&").append("encryptKey").append("=")
-            .append(StringUtil.nullToEmpty(this.getEncryptKey())).append("&").append("encryptType").append("=")
-            .append(StringUtil.nullToEmpty(this.getEncryptType())).append("&").append("bizContent").append("=")
-            .append(StringUtil.nullToEmpty(this.getBizContent()));
+        sb.append("merchantNo").append("=").append(StringUtil.nullToEmpty(this.getMerchantNo())).append("&")
+            .append("requestFlowNo").append("=").append(StringUtil.nullToEmpty(this.getRequestFlowNo())).append("&")
+            .append("timestamp").append("=").append(StringUtil.nullToEmpty(this.getTimestamp())).append("&")
+            .append("encoding").append("=").append(StringUtil.nullToEmpty(this.getEncoding())).append("&")
+            .append("encryptKey").append("=").append(StringUtil.nullToEmpty(this.getEncryptKey())).append("&")
+            .append("encryptType").append("=").append(StringUtil.nullToEmpty(this.getEncryptType())).append("&")
+            .append("bizContent").append("=").append(StringUtil.nullToEmpty(this.getBizContent()));
         return sb.toString();
     }
 
@@ -109,7 +108,7 @@ public class ServiceRequest<T> extends BaseReq {
             String sign = params.get("sign");
             String encoding = params.get("encoding");
             if (StringUtil.isEmpty(encoding)) {
-                encoding = "UTF-8";
+                encoding = DEFALT_ENCODING_UTF8;
             }
 
             Set<String> keySet = params.keySet();
@@ -138,9 +137,8 @@ public class ServiceRequest<T> extends BaseReq {
                     }
 
                     key = keyItr.next();
-                } while (!key.equals("appId") && !key.equals("requestFlowNo") && !key.equals("bizContent")
-                    && !key.equals("encoding") && !key.equals("requestDateTime") && !key.equals("requestFlowNo")
-                    && !key.equals("encryptKey") && !key.equals("merchantNo") && !key.equals("subMerchantNo"));
+                } while (!key.equals("bizContent") && !key.equals("encoding") && !key.equals("timestamp")
+                    && !key.equals("requestFlowNo") && !key.equals("encryptKey") && !key.equals("merchantNo"));
 
                 keyList.add(key);
             }
@@ -167,14 +165,6 @@ public class ServiceRequest<T> extends BaseReq {
 
     public void setMerchantNo(String merchantNo) {
         this.merchantNo = merchantNo;
-    }
-
-    public String getRequestDateTime() {
-        return requestDateTime;
-    }
-
-    public void setRequestDateTime(String requestDateTime) {
-        this.requestDateTime = requestDateTime;
     }
 
     public String getRequestFlowNo() {

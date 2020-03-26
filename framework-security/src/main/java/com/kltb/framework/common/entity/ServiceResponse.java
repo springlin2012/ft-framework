@@ -24,10 +24,6 @@ public class ServiceResponse<T> extends BaseReq {
     private String code;
     private String msg;
 
-    private T bizObject;
-
-    private String responseDateTime;
-
     /**
      * 签名
      *
@@ -44,10 +40,10 @@ public class ServiceResponse<T> extends BaseReq {
 
     public void doSign(PrivateKey privateKey, String signAlgorithm, boolean isUsingAppConfig) throws SignException {
         try {
-            this.setSign(Base64.byteArrayToBase64(
-                AsymmetricUtil.genSignature(this.toSignContent().getBytes(DEFALT_ENCODING_UTF8), privateKey, signAlgorithm)));
-        } catch (Exception var5) {
-            throw new SignException("签名失败", var5);
+            this.setSign(Base64.byteArrayToBase64(AsymmetricUtil
+                .genSignature(this.toSignContent().getBytes(this.getEncoding()), privateKey, signAlgorithm)));
+        } catch (Exception e) {
+            throw new SignException("签名失败", e);
         }
     }
 
@@ -57,8 +53,8 @@ public class ServiceResponse<T> extends BaseReq {
             .append("encryptKey").append("=").append(StringUtil.nullToEmpty(this.getEncryptKey())).append("&")
             .append("encryptType").append("=").append(StringUtil.nullToEmpty(this.getEncryptType())).append("&")
             .append("code").append("=").append(StringUtil.nullToEmpty(this.getCode())).append("&").append("msg")
-            .append("=").append(StringUtil.nullToEmpty(this.getMsg())).append("&").append("responseDateTime")
-            .append("=").append(StringUtil.nullToEmpty(this.getResponseDateTime()));
+            .append("=").append(StringUtil.nullToEmpty(this.getMsg())).append("&").append("timestamp").append("=")
+            .append(StringUtil.nullToEmpty(this.getTimestamp()));
         return sb.toString();
     }
 
@@ -82,8 +78,8 @@ public class ServiceResponse<T> extends BaseReq {
         try {
             return AsymmetricUtil.verifySignature(this.toSignContent().getBytes(this.getEncoding()),
                 Base64.base64ToByteArray(this.getSign()), publicKey, signAlgorithm);
-        } catch (Exception var5) {
-            throw new SignException("签名验证失败", var5);
+        } catch (Exception e) {
+            throw new SignException("签名验证失败", e);
         }
     }
 
@@ -103,20 +99,7 @@ public class ServiceResponse<T> extends BaseReq {
         this.msg = msg;
     }
 
-    public T getBizObject() {
-        return bizObject;
-    }
-
     public void setBizObject(T bizObject) {
         this.setBizContent(JSONObject.toJSONString(bizObject));
-    }
-
-
-    public String getResponseDateTime() {
-        return responseDateTime;
-    }
-
-    public void setResponseDateTime(String responseDateTime) {
-        this.responseDateTime = responseDateTime;
     }
 }

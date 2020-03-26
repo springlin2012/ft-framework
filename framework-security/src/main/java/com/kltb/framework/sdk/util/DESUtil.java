@@ -20,7 +20,6 @@ import java.util.Arrays;
 
 /**
  * @descript: DES加密
- * @auth: lichunlin
  * @date: 2019/11/07.
  */
 public class DESUtil {
@@ -33,9 +32,9 @@ public class DESUtil {
     public static byte[] encrypt(byte[] key, byte[] ivByte, byte[] value) throws Exception {
         try {
             SecureRandom sr = new SecureRandom();
-            SecretKey securekey = new SecretKeySpec(key, "DESede");
+            SecretKey securekey = new SecretKeySpec(key, DESEDE);
             IvParameterSpec iv = new IvParameterSpec(ivByte);
-            Cipher cipher = Cipher.getInstance("DESede/CBC/PKCS5Padding");
+            Cipher cipher = Cipher.getInstance(DES_CBC);
             cipher.init(1, securekey, iv, sr);
             return cipher.doFinal(value);
         } catch (Exception var7) {
@@ -46,9 +45,9 @@ public class DESUtil {
     public static void encrypt(byte[] key, byte[] ivByte, InputStream dataToEncrypt, OutputStream encryptedOut)
         throws Exception {
         SecureRandom sr = new SecureRandom();
-        SecretKey securekey = new SecretKeySpec(key, "DESede");
+        SecretKey securekey = new SecretKeySpec(key, DESEDE);
         IvParameterSpec iv = new IvParameterSpec(ivByte);
-        Cipher cipher = Cipher.getInstance("DESede/CBC/PKCS5Padding");
+        Cipher cipher = Cipher.getInstance(DES_CBC);
         cipher.init(1, securekey, iv, sr);
 
         try {
@@ -72,9 +71,9 @@ public class DESUtil {
     public static byte[] decrypt(byte[] key, byte[] ivByte, byte[] value) throws Exception {
         try {
             SecureRandom sr = new SecureRandom();
-            SecretKey securekey = new SecretKeySpec(key, "DESede");
+            SecretKey securekey = new SecretKeySpec(key, DESEDE);
             IvParameterSpec iv = new IvParameterSpec(ivByte);
-            Cipher cipher = Cipher.getInstance("DESede/CBC/PKCS5Padding");
+            Cipher cipher = Cipher.getInstance(DES_CBC);
             cipher.init(2, securekey, iv, sr);
             return cipher.doFinal(value);
         } catch (Exception var7) {
@@ -86,9 +85,9 @@ public class DESUtil {
         throws Exception {
         try {
             SecureRandom sr = new SecureRandom();
-            SecretKey securekey = new SecretKeySpec(key, "DESede");
+            SecretKey securekey = new SecretKeySpec(key, DESEDE);
             IvParameterSpec iv = new IvParameterSpec(ivByte);
-            Cipher cipher = Cipher.getInstance("DESede/CBC/PKCS5Padding");
+            Cipher cipher = Cipher.getInstance(DES_CBC);
             cipher.init(2, securekey, iv, sr);
             byte[] buffer = new byte[1032];
             int read = 0;
@@ -129,7 +128,7 @@ public class DESUtil {
     }
 
     public static byte[] generateKey() throws NoSuchAlgorithmException {
-        KeyGenerator keyGen = KeyGenerator.getInstance("DESede");
+        KeyGenerator keyGen = KeyGenerator.getInstance(DESEDE);
         keyGen.init(new SecureRandom());
         SecretKey key = keyGen.generateKey();
         return key.getEncoded();
@@ -146,26 +145,25 @@ public class DESUtil {
         byte[] default_Key = generateKey();
         byte[] Key = generateRandomIV();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("***********************************************");
-        System.out.println("**********密码加密小工具   ***************");
-        System.out.print("*** 请输入密码原文：");
-        String sSrcPwd = "w5hQ4/1rtiTRKVRbE0iYDg==";
+        System.out.println("=====密码加密工具=====");
+        System.out.print("请输入密码原文：");
+        String sSrcPwd = "a5hQ4/1rtiTRKVRbE0iYDg==";
 
         while (true) {
             sSrcPwd = br.readLine();
             if (sSrcPwd != null && sSrcPwd.length() > 0) {
                 byte[] encrypt = encrypt(default_Key, Key, sSrcPwd.getBytes());
                 String sPwd = Base64.byteArrayToBase64(encrypt);
-                System.out.println("*** 加密后密文：{" + sPwd + "}");
-                System.out.println("***********************************************");
+                System.out.println("加密后密文：{" + sPwd + "}");
+                System.out.println("==================================");
                 byte[] decodePwd = Base64.base64ToByteArray(sPwd);
                 decodePwd = decrypt(default_Key, Key, decodePwd);
-                System.out.println("*** 解密后原文：{" + new String(decodePwd, "UTF-8") + "}");
-                System.out.println("***********************************************");
+                System.out.println("解密后原文：{" + new String(decodePwd, DESEDE_CHARSET_NAME) + "}");
+                System.out.println("==================================");
                 return;
             }
 
-            System.out.print("*** 请输入密码原文：");
+            System.out.print("请输入密码原文：");
         }
     }
 }

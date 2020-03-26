@@ -13,7 +13,8 @@ import com.kltb.framework.sdk.exception.EncodeDecodeException;
 import com.kltb.framework.sdk.util.AESUtil;
 import com.kltb.framework.sdk.util.AsymmetricUtil;
 import com.kltb.framework.sdk.util.Base64;
-import com.kltb.framework.sdk.util.StringUtil;
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -37,14 +38,13 @@ public class SPHelper extends SecurityProtocol {
     public void decode(ServiceRequest request) throws EncodeDecodeException {
         try {
             request.verify(publicKey);
-            if (!StringUtil.isEmpty(request.getBizContent())) {
+            if (StringUtils.isNotEmpty(request.getBizContent())) {
                 if (EncryptTypeEnum.AES.equals(request.getEncryptType())) {
                     byte[] key =
                         AsymmetricUtil.decryptData(Base64.base64ToByteArray(request.getEncryptKey()), privateKey, null);
                     byte[] byteBizData = AESUtil.decrypt(key, Base64.base64ToByteArray(request.getBizContent()));
                     request.setBizContent(new String(byteBizData, request.getEncoding()));
                 }
-
             }
         } catch (Exception e) {
             throw new EncodeDecodeException("请求编码处理失败", e);
@@ -60,17 +60,15 @@ public class SPHelper extends SecurityProtocol {
      */
     public void encode(ServiceResponse response) throws EncodeDecodeException {
         try {
-            if (StringUtil.isEmpty(response.getBizContent())) {
-                response.sign(privateKey);
-            } else {
+            if (StringUtils.isNotEmpty(response.getBizContent())) {
                 if (EncryptTypeEnum.AES.equals(response.getEncryptType())) {
                     byte[] key = AESUtil.generateKey(128);
                     response.setEncryptKey(Base64.byteArrayToBase64(AsymmetricUtil.encryptData(key, publicKey, null)));
-                    byte[] byteBizData = AESUtil.encrypt(key, response.getBizContent().getBytes(DEFUALT_ENDCODING));
+                    byte[] byteBizData = AESUtil.encrypt(key, response.getBizContent().getBytes(response.getEncoding()));
                     response.setBizContent(Base64.byteArrayToBase64(byteBizData));
                 }
-                response.sign(privateKey);
             }
+            response.sign(privateKey);
         } catch (Exception e) {
             throw new EncodeDecodeException("编码处理失败", e);
         }

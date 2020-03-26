@@ -25,9 +25,9 @@ public class AESUtil {
     public static byte[] encrypt(byte key[], byte ivByte[], byte value[]) throws Exception {
         try {
             SecureRandom sr = new SecureRandom();
-            SecretKey securekey = new SecretKeySpec(key, "AES");
+            SecretKey securekey = new SecretKeySpec(key, AES);
             IvParameterSpec iv = new IvParameterSpec(ivByte);
-            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+            Cipher cipher = Cipher.getInstance(AES_CBC);
             cipher.init(1, securekey, iv, sr);
             return cipher.doFinal(value);
         } catch (Exception e) {
@@ -37,8 +37,8 @@ public class AESUtil {
 
     public static byte[] encrypt(byte key[], byte value[]) throws Exception {
         try {
-            SecretKey securekey = new SecretKeySpec(key, "AES");
-            Cipher cipher = Cipher.getInstance("AES");
+            SecretKey securekey = new SecretKeySpec(key, AES);
+            Cipher cipher = Cipher.getInstance(AES);
             cipher.init(1, securekey);
             return cipher.doFinal(value);
         } catch (Exception e) {
@@ -49,9 +49,9 @@ public class AESUtil {
     public static void encrypt(byte key[], byte ivByte[], InputStream dataToEncrypt, OutputStream encryptedOut)
         throws Exception {
         SecureRandom sr = new SecureRandom();
-        SecretKey securekey = new SecretKeySpec(key, "AES");
+        SecretKey securekey = new SecretKeySpec(key, AES);
         IvParameterSpec iv = new IvParameterSpec(ivByte);
-        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        Cipher cipher = Cipher.getInstance(AES_CBC);
         cipher.init(1, securekey, iv, sr);
         try {
             byte buffer[] = new byte[1024];
@@ -72,9 +72,9 @@ public class AESUtil {
     public static byte[] decrypt(byte key[], byte ivByte[], byte value[]) throws Exception {
         try {
             SecureRandom sr = new SecureRandom();
-            SecretKey securekey = new SecretKeySpec(key, "AES");
+            SecretKey securekey = new SecretKeySpec(key, AES);
             IvParameterSpec iv = new IvParameterSpec(ivByte);
-            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+            Cipher cipher = Cipher.getInstance(AES_CBC);
             cipher.init(2, securekey, iv, sr);
             return cipher.doFinal(value);
         } catch (Exception e) {
@@ -84,8 +84,8 @@ public class AESUtil {
 
     public static byte[] decrypt(byte key[], byte value[]) throws Exception {
         try {
-            SecretKey securekey = new SecretKeySpec(key, "AES");
-            Cipher cipher = Cipher.getInstance("AES");
+            SecretKey securekey = new SecretKeySpec(key, AES);
+            Cipher cipher = Cipher.getInstance(AES);
             cipher.init(2, securekey);
             return cipher.doFinal(value);
         } catch (Exception e) {
@@ -97,9 +97,9 @@ public class AESUtil {
         throws Exception {
         try {
             SecureRandom sr = new SecureRandom();
-            SecretKey securekey = new SecretKeySpec(key, "AES");
+            SecretKey securekey = new SecretKeySpec(key, AES);
             IvParameterSpec iv = new IvParameterSpec(ivByte);
-            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+            Cipher cipher = Cipher.getInstance(AES_CBC);
             cipher.init(2, securekey, iv, sr);
             byte buffer[] = new byte[1040];
             int read = 0;
@@ -133,14 +133,14 @@ public class AESUtil {
     }
 
     public static byte[] generateKey(int length) throws NoSuchAlgorithmException {
-        KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
+        KeyGenerator keyGenerator = KeyGenerator.getInstance(AES);
         keyGenerator.init(length);
         SecretKey key = keyGenerator.generateKey();
         return key.getEncoded();
     }
 
     public static byte[] generateRandomIV() throws NoSuchAlgorithmException {
-        KeyGenerator keyGen = KeyGenerator.getInstance("AES");
+        KeyGenerator keyGen = KeyGenerator.getInstance(AES);
         keyGen.init(new SecureRandom());
         SecretKey randomDESKey = keyGen.generateKey();
         return randomDESKey.getEncoded();
@@ -148,32 +148,32 @@ public class AESUtil {
 
     public static CipherOutputStream encryptMode(String aesKey, OutputStream outputStream)
         throws NoSuchAlgorithmException {
-        KeyGenerator kgen = KeyGenerator.getInstance("AES");
+        KeyGenerator kgen = KeyGenerator.getInstance(AES);
         SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
         random.setSeed(aesKey.getBytes());
         kgen.init(128, random);
         SecretKey secretKey = kgen.generateKey();
         byte enCodeFormat[] = secretKey.getEncoded();
-        SecretKeySpec key = new SecretKeySpec(enCodeFormat, "AES");
+        SecretKeySpec key = new SecretKeySpec(enCodeFormat, AES);
         return encryptMode(((SecretKey)(key)), outputStream);
     }
 
     public static CipherInputStream decryptMode(String aesKey, InputStream inputStream)
         throws NoSuchAlgorithmException {
         SecretKeySpec keySpec = null;
-        KeyGenerator kgen = KeyGenerator.getInstance("AES");
+        KeyGenerator kgen = KeyGenerator.getInstance(AES);
         SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
         random.setSeed(aesKey.getBytes());
         kgen.init(128, random);
         SecretKey secretKey = kgen.generateKey();
         byte encodeKey[] = secretKey.getEncoded();
-        keySpec = new SecretKeySpec(encodeKey, "AES");
+        keySpec = new SecretKeySpec(encodeKey, AES);
         return decryptMode(((SecretKey)(keySpec)), inputStream);
     }
 
     public static CipherInputStream decryptMode(SecretKey secretKey, InputStream inputStream) {
         try {
-            Cipher e = Cipher.getInstance("AES");
+            Cipher e = Cipher.getInstance(AES);
             e.init(2, secretKey);
             return new CipherInputStream(inputStream, e);
         } catch (Exception var3) {
@@ -183,7 +183,7 @@ public class AESUtil {
 
     public static CipherOutputStream encryptMode(SecretKey secretKey, OutputStream outputStream) {
         try {
-            Cipher e = Cipher.getInstance("AES");
+            Cipher e = Cipher.getInstance(AES);
             e.init(1, secretKey);
             return new CipherOutputStream(outputStream, e);
         } catch (Exception var3) {
