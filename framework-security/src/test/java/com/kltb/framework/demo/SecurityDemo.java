@@ -3,7 +3,7 @@
  *
  * @author lichunlin
  */
-package com.kltb.ccs.service;
+package com.kltb.framework.demo;
 
 import com.alibaba.fastjson.JSONObject;
 import com.kltb.framework.common.entity.SKeyInfo;
