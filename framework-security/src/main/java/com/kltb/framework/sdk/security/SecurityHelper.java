@@ -17,16 +17,28 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 
 /**
  * @descript: 安全协议接收辅助类
  * @date: 2019/11/07.
  */
-public class SPHelper extends SecurityProtocol {
+public class SecurityHelper {
+    protected static PublicKey publicKey = null;
+    protected static PrivateKey privateKey = null;
 
-    public SPHelper(SKeyInfo sKeyInfo) throws NoSuchAlgorithmException, InvalidKeySpecException, IOException {
-        super(sKeyInfo);
+    public SecurityHelper(SKeyInfo sKeyInfo) throws NoSuchAlgorithmException, InvalidKeySpecException, IOException {
+        this.init(sKeyInfo);
+    }
+
+    private void init(SKeyInfo sKeyInfo)
+            throws NoSuchAlgorithmException, InvalidKeySpecException, IOException {
+        publicKey = AsymmetricKeyHelper.getInstance().readRSAPublicKey(sKeyInfo.getPublicKeyName(),
+                sKeyInfo.getPublicKeyPath());
+        privateKey = AsymmetricKeyHelper.getInstance().readRSAPrivateKey(sKeyInfo.getPrivateKeyName(),
+                sKeyInfo.getPrivateKeyPath());
     }
 
     /**
