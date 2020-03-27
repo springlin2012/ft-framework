@@ -23,31 +23,30 @@ import java.util.Map;
 public class SecurityDemo {
 
     public static void main(String[] args) {
-        SKeyInfo mKeyInfo = new SKeyInfo();
-        mKeyInfo.setPrivateKeyName("app_private_key");
-        mKeyInfo.setPrivateKeyPath("classpath:keys/app_private_key.pem");
-        mKeyInfo.setPublicKeyName("platform_public_key");
-        mKeyInfo.setPublicKeyPath("classpath:keys/platform_public_key.pem");
-
-        SKeyInfo pKeyInfo = new SKeyInfo();
-        pKeyInfo.setPublicKeyName("app_public_key");
-        pKeyInfo.setPublicKeyPath("classpath:keys/app_public_key.pem");
-        pKeyInfo.setPrivateKeyName("platform_private_key");
-        pKeyInfo.setPrivateKeyPath("classpath:keys/platform_private_key.pem");
-
         try {
-            // merchant encode
+            /*SKeyInfo pKeyInfo = new SKeyInfo();
+            pKeyInfo.setPublicKeyName("app_public_key");
+            pKeyInfo.setPublicKeyPath("classpath:keys/app_public_key.pem");
+            pKeyInfo.setPrivateKeyName("platform_private_key");
+            pKeyInfo.setPrivateKeyPath("classpath:keys/platform_private_key.pem");
+            SPHelper spHelper = new SPHelper(pKeyInfo);*/
+
+            SKeyInfo mKeyInfo = new SKeyInfo();
+            mKeyInfo.setPublicKeyName("platform_public_key");
+            mKeyInfo.setPublicKeyPath("classpath:keys/platform_public_key.pem");
+            mKeyInfo.setPrivateKeyName("app_private_key");
+            mKeyInfo.setPrivateKeyPath("classpath:keys/app_private_key.pem");
             MSPHelper mspHelper = new MSPHelper(mKeyInfo);
-            // ServiceRequest encodeServiceReq = encodeDemo(mspHelper);
+
+            // merchant encode
+             ServiceRequest encodeServiceReq = encodeDemo(mspHelper);
             // platform decode
-            SPHelper spHelper = new SPHelper(pKeyInfo);
-            // decodeDemo(spHelper, encodeServiceReq);
+//             decodeDemo(spHelper, encodeServiceReq);
 
             // platform encode
-            ServiceResponse encodeServiceResponse = responseDecodeDemo(spHelper);
+//            ServiceResponse encodeServiceResponse = responseDecodeDemo(spHelper);
             // merchant decode
-            responseDecodeDemo(mspHelper, encodeServiceResponse);
-
+//            responseDecodeDemo(mspHelper);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -90,7 +89,8 @@ public class SecurityDemo {
         return response;
     }
 
-    public static void responseDecodeDemo(MSPHelper mspHelper, ServiceResponse response) throws EncodeDecodeException {
+    public static void responseDecodeDemo(MSPHelper mspHelper) throws EncodeDecodeException {
+        ServiceResponse response = JSONObject.parseObject("{\"bizContent\":\"gATk0dKSgTCp5SqTfzB780S1Us0hVV9h3Uuz62fDAKrAXJWZ6WEmVm48P7xVoQeh\",\"code\":\"200\",\"encoding\":\"UTF-8\",\"encryptKey\":\"d11QbSIuTY+NStt/TJsbc2q1oHTsptVDyuHZ+AwmHg5fHD6y/A4Gg0a5LW9/68mBZZ3wgv9G7Sf8YlEbaq/xocHV/H5C84cuipwNkIX4j7T10WvOafZuSiPff8vdVJto+A0k3W0BdlVhjlbRbC5+aJW3vKwyC6z8zRmo0AxHckE=\",\"encryptType\":\"AES\",\"msg\":\"成功\",\"sign\":\"axqSpR/c8RdcJzEn+huxkZhaGfY2b3RVJcwPp2rT7L3sgFyJd40GTsUPYmtnuyGxiKegVqEGwYVqUAdgRfX0IeFQOlxwmwZH/4wXnSm44pqYrnlUqqmuW2yZwewhA+fSGfsooEyeFHk2FAmKvrg7e6+IUe9WsfmpyzTPqxEXo74=\",\"timestamp\":1585290862745}", ServiceResponse.class);
         mspHelper.decode(response);
         System.out.println("decode -> response data: " + JSONObject.toJSONString(response));
     }

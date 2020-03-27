@@ -68,12 +68,12 @@ public class ServiceRequest<T> extends BaseReq {
     public String toSignContent() {
         StringBuilder sb = new StringBuilder();
         sb.append("merchantNo").append("=").append(StringUtil.nullToEmpty(this.getMerchantNo())).append("&")
-            .append("requestFlowNo").append("=").append(StringUtil.nullToEmpty(this.getRequestFlowNo())).append("&")
-            .append("timestamp").append("=").append(StringUtil.nullToEmpty(this.getTimestamp())).append("&")
-            .append("encoding").append("=").append(StringUtil.nullToEmpty(this.getEncoding())).append("&")
-            .append("encryptKey").append("=").append(StringUtil.nullToEmpty(this.getEncryptKey())).append("&")
-            .append("encryptType").append("=").append(StringUtil.nullToEmpty(this.getEncryptType())).append("&")
-            .append("bizContent").append("=").append(StringUtil.nullToEmpty(this.getBizContent()));
+                .append("requestFlowNo").append("=").append(StringUtil.nullToEmpty(this.getRequestFlowNo())).append("&")
+                .append("encoding").append("=").append(StringUtil.nullToEmpty(this.getEncoding())).append("&")
+                .append("encryptKey").append("=").append(StringUtil.nullToEmpty(this.getEncryptKey())).append("&")
+                .append("encryptType").append("=").append(StringUtil.nullToEmpty(this.getEncryptType())).append("&")
+                .append("bizContent").append("=").append(StringUtil.nullToEmpty(this.getBizContent()))
+                .append("timestamp").append("=").append(StringUtil.nullToEmpty(this.getTimestamp())).append("&");
         return sb.toString();
     }
 
@@ -114,31 +114,29 @@ public class ServiceRequest<T> extends BaseReq {
             Set<String> keySet = params.keySet();
             Iterator<String> keyItr = keySet.iterator();
             ArrayList keyList = new ArrayList();
-
             while (true) {
                 String key;
                 do {
                     if (!keyItr.hasNext()) {
                         String[] keysArr = (String[])keyList.toArray(new String[0]);
                         Arrays.sort(keysArr);
-                        StringBuilder signedContent = new StringBuilder();
-
+                        StringBuilder sigContent = new StringBuilder();
                         for (int i = 0; i < keysArr.length; ++i) {
-                            signedContent.append(keysArr[i]).append("=").append(params.get(keysArr[i])).append("&");
+                            sigContent.append(keysArr[i]).append("=").append(params.get(keysArr[i])).append("&");
                         }
 
-                        String signedContentStr = signedContent.toString();
-                        if (signedContentStr.endsWith("&")) {
-                            signedContentStr = signedContentStr.substring(0, signedContentStr.length() - 1);
+                        String sigContentStr = sigContent.toString();
+                        if (sigContentStr.endsWith("&")) {
+                            sigContentStr = sigContentStr.substring(0, sigContentStr.length() - 1);
                         }
-
-                        return AsymmetricUtil.verifySignature(signedContentStr.getBytes(encoding),
+                        return AsymmetricUtil.verifySignature(sigContentStr.getBytes(encoding),
                             Base64.base64ToByteArray(sign), publicKey, signAlgorithm);
                     }
 
                     key = keyItr.next();
                 } while (!key.equals("bizContent") && !key.equals("encoding") && !key.equals("timestamp")
-                    && !key.equals("requestFlowNo") && !key.equals("encryptKey") && !key.equals("merchantNo"));
+                    && !key.equals("requestFlowNo") && !key.equals("encryptKey") && !key.equals("encryptType")
+                    && !key.equals("merchantNo"));
 
                 keyList.add(key);
             }
@@ -175,4 +173,11 @@ public class ServiceRequest<T> extends BaseReq {
         this.requestFlowNo = requestFlowNo;
     }
 
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
 }

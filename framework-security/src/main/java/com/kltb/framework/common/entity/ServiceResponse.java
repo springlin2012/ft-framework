@@ -49,12 +49,12 @@ public class ServiceResponse<T> extends BaseReq {
 
     public String toSignContent() {
         StringBuilder sb = new StringBuilder();
-        sb.append("bizContent").append("=").append(StringUtil.nullToEmpty(this.getBizContent())).append("&")
-            .append("encryptKey").append("=").append(StringUtil.nullToEmpty(this.getEncryptKey())).append("&")
-            .append("encryptType").append("=").append(StringUtil.nullToEmpty(this.getEncryptType())).append("&")
-            .append("code").append("=").append(StringUtil.nullToEmpty(this.getCode())).append("&").append("msg")
-            .append("=").append(StringUtil.nullToEmpty(this.getMsg())).append("&").append("timestamp").append("=")
-            .append(StringUtil.nullToEmpty(this.getTimestamp()));
+        sb.append("bizContent").append("=").append(StringUtil.nullToEmpty(this.getBizContent()))
+                .append("&").append("encryptKey").append("=").append(StringUtil.nullToEmpty(this.getEncryptKey()))
+                .append("&").append("encryptType").append("=").append(StringUtil.nullToEmpty(this.getEncryptType()))
+                .append("&").append("code").append("=").append(StringUtil.nullToEmpty(this.getCode()))
+                .append("&").append("msg").append("=").append(StringUtil.nullToEmpty(this.getMsg()))
+                .append("&").append("timestamp").append("=").append(StringUtil.nullToEmpty(this.getTimestamp()));
         return sb.toString();
     }
 
