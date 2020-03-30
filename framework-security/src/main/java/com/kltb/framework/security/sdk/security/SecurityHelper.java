@@ -6,8 +6,8 @@
 package com.kltb.framework.security.sdk.security;
 
 import com.kltb.framework.security.common.entity.SKeyInfo;
-import com.kltb.framework.security.common.entity.ServiceRequest;
-import com.kltb.framework.security.common.entity.ServiceResponse;
+import com.kltb.framework.security.common.entity.SecurityRequest;
+import com.kltb.framework.security.common.entity.SecurityResponse;
 import com.kltb.framework.security.common.enums.EncryptTypeEnum;
 import com.kltb.framework.security.sdk.exception.EncodeDecodeException;
 import com.kltb.framework.security.sdk.util.AESUtil;
@@ -47,7 +47,7 @@ public class SecurityHelper {
      * @param request
      * @throws EncodeDecodeException
      */
-    public void decode(ServiceRequest request) throws EncodeDecodeException {
+    public void decode(SecurityRequest request) throws EncodeDecodeException {
         try {
             request.verify(publicKey);
             if (StringUtils.isNotEmpty(request.getBizContent())) {
@@ -70,7 +70,7 @@ public class SecurityHelper {
      * @param response
      * @throws EncodeDecodeException
      */
-    public void encode(ServiceResponse response) throws EncodeDecodeException {
+    public void encode(SecurityResponse response) throws EncodeDecodeException {
         try {
             if (StringUtils.isNotEmpty(response.getBizContent())) {
                 if (EncryptTypeEnum.AES.equals(response.getEncryptType())) {

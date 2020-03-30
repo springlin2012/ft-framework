@@ -11,12 +11,12 @@ import java.security.PublicKey;
 import java.util.*;
 
 /**
- * @descript: 请求
+ * @descript: 安全请求
  * @auth: lichunlin
  * @date: 2019/11/07.
  * @param <T>
  */
-public class ServiceRequest<T> extends BaseReq {
+public class SecurityRequest<T> extends BaseReq {
     /**
      * 商户号
      */

@@ -60,7 +60,7 @@ public class AsymmetricKeyHelper {
     }
 
     public PublicKey getPublicKey(String name) {
-        synchronized (this.privateKeyMap) {
+        synchronized (this.publicKeyMap) {
             return (PublicKey) this.publicKeyMap.get(name);
         }
     }
