@@ -1,5 +1,5 @@
 
-package com.kltb.framework.sdk.exception;
+package com.kltb.framework.security.sdk.exception;
 
 
 public class EncodeDecodeException extends Exception {

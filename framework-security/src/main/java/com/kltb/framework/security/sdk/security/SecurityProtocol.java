@@ -1,6 +1,6 @@
-package com.kltb.framework.sdk.security;
+package com.kltb.framework.security.sdk.security;
 
-import com.kltb.framework.common.entity.*;
+import com.kltb.framework.security.common.entity.*;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;

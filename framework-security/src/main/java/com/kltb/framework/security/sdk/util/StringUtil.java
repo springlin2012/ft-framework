@@ -3,7 +3,7 @@
 // Decompiler options: packimports(3) fieldsfirst
 // Source File Name: StringUtil.java
 
-package com.kltb.framework.sdk.util;
+package com.kltb.framework.security.sdk.util;
 
 import java.util.Arrays;
 

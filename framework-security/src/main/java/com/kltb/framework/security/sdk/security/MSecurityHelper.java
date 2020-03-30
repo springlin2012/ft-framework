@@ -3,16 +3,16 @@
  *
  * @author lichunlin
  */
-package com.kltb.framework.sdk.security;
+package com.kltb.framework.security.sdk.security;
 
-import com.kltb.framework.common.entity.SKeyInfo;
-import com.kltb.framework.common.entity.ServiceRequest;
-import com.kltb.framework.common.entity.ServiceResponse;
-import com.kltb.framework.common.enums.EncryptTypeEnum;
-import com.kltb.framework.sdk.exception.EncodeDecodeException;
-import com.kltb.framework.sdk.util.AESUtil;
-import com.kltb.framework.sdk.util.AsymmetricUtil;
-import com.kltb.framework.sdk.util.Base64;
+import com.kltb.framework.security.common.entity.SKeyInfo;
+import com.kltb.framework.security.common.entity.ServiceRequest;
+import com.kltb.framework.security.common.entity.ServiceResponse;
+import com.kltb.framework.security.common.enums.EncryptTypeEnum;
+import com.kltb.framework.security.sdk.exception.EncodeDecodeException;
+import com.kltb.framework.security.sdk.util.AESUtil;
+import com.kltb.framework.security.sdk.util.AsymmetricUtil;
+import com.kltb.framework.security.sdk.util.Base64;
 import org.apache.commons.lang3.StringUtils;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;

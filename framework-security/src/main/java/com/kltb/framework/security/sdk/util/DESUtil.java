@@ -3,7 +3,7 @@
  *
  * @author lichunlin
  */
-package com.kltb.framework.sdk.util;
+package com.kltb.framework.security.sdk.util;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;

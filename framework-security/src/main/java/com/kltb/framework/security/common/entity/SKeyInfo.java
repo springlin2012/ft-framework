@@ -1,4 +1,4 @@
-package com.kltb.framework.common.entity;
+package com.kltb.framework.security.common.entity;
 
 public class SKeyInfo {
     private String privateKeyName;

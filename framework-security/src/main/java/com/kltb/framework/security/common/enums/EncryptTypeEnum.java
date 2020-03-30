@@ -3,7 +3,7 @@
  *
  * @author lichunlin
  */
-package com.kltb.framework.common.enums;
+package com.kltb.framework.security.common.enums;
 
 /**
  * @descript: 加密算法

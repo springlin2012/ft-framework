@@ -1,11 +1,9 @@
-package com.kltb.framework.sdk.util;
+package com.kltb.framework.security.sdk.util;
 
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.BufferedReader;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;

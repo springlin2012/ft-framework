@@ -6,12 +6,12 @@
 package com.kltb.framework.demo;
 
 import com.alibaba.fastjson.JSONObject;
-import com.kltb.framework.common.entity.SKeyInfo;
-import com.kltb.framework.common.entity.ServiceRequest;
-import com.kltb.framework.common.entity.ServiceResponse;
-import com.kltb.framework.sdk.exception.EncodeDecodeException;
-import com.kltb.framework.sdk.security.SecurityHelper;
-import com.kltb.framework.sdk.security.MSecurityHelper;
+import com.kltb.framework.security.common.entity.SKeyInfo;
+import com.kltb.framework.security.common.entity.ServiceRequest;
+import com.kltb.framework.security.common.entity.ServiceResponse;
+import com.kltb.framework.security.sdk.exception.EncodeDecodeException;
+import com.kltb.framework.security.sdk.security.SecurityHelper;
+import com.kltb.framework.security.sdk.security.MSecurityHelper;
 import java.util.HashMap;
 import java.util.Map;
 

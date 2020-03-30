@@ -3,7 +3,7 @@
 // Decompiler options: packimports(3) fieldsfirst 
 // Source File Name:   SignException.java
 
-package com.kltb.framework.sdk.exception;
+package com.kltb.framework.security.sdk.exception;
 
 
 public class SignException extends Exception {

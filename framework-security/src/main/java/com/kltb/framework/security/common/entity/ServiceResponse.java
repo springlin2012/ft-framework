@@ -3,13 +3,13 @@
  *
  * @author lichunlin
  */
-package com.kltb.framework.common.entity;
+package com.kltb.framework.security.common.entity;
 
 import com.alibaba.fastjson.JSONObject;
-import com.kltb.framework.sdk.exception.SignException;
-import com.kltb.framework.sdk.util.AsymmetricUtil;
-import com.kltb.framework.sdk.util.Base64;
-import com.kltb.framework.sdk.util.StringUtil;
+import com.kltb.framework.security.sdk.exception.SignException;
+import com.kltb.framework.security.sdk.util.AsymmetricUtil;
+import com.kltb.framework.security.sdk.util.Base64;
+import com.kltb.framework.security.sdk.util.StringUtil;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;

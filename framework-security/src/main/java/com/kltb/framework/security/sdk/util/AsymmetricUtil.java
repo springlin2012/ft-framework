@@ -1,4 +1,4 @@
-package com.kltb.framework.sdk.util;
+package com.kltb.framework.security.sdk.util;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;

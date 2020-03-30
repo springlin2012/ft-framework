@@ -3,9 +3,9 @@
  *
  * @author lichunlin
  */
-package com.kltb.framework.common.entity;
+package com.kltb.framework.security.common.entity;
 
-import com.kltb.framework.common.enums.EncryptTypeEnum;
+import com.kltb.framework.security.common.enums.EncryptTypeEnum;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
