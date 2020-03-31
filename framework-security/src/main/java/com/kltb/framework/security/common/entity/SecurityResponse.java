@@ -36,12 +36,18 @@ public class SecurityResponse<T> extends BaseReq {
         this.msg = ResultCodeEnum.SUCCESS.getValue();
     }
 
+
     public SecurityResponse(IEnum resultCode) {
         this.code = resultCode.getKey();
         this.msg = resultCode.getValue();
     }
 
     public SecurityResponse(T data) {
+        this.setBizObject(data);
+    }
+
+    public SecurityResponse(String merchantNo, T data) {
+        this.merchantNo = merchantNo;
         this.setBizObject(data);
     }
 

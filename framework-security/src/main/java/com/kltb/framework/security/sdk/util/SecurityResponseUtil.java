@@ -13,19 +13,19 @@ import com.kltb.framework.security.common.enums.ResultCodeEnum;
 public class SecurityResponseUtil {
 
     /**
-     * 查询结果转服务输出
-     */
-    public static <T> SecurityResponse<T> createResponse(T rlt) {
-        return new SecurityResponse<T>(rlt);
-    }
-
-    /**
-     * 查询结果转服务输出
+     * 结果转服务输出
      */
     public static <T> SecurityResponse<T> createResponse() {
         return new SecurityResponse<T>();
     }
 
+    public static <T> SecurityResponse<T> createResponse(T rlt) {
+        return new SecurityResponse<T>(rlt);
+    }
+
+    public static <T> SecurityResponse<T> createResponse(String merchantNo, T rlt) {
+        return new SecurityResponse<T>(merchantNo, rlt);
+    }
 
     /**
      * 异常转服务输出
