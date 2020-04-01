@@ -30,15 +30,15 @@ public class SecurityDemo {
             pKeyInfo.setPrivateKeyPath("classpath:keys/platform_private_key.pem");
             SecurityHelper securityHelper = new SecurityHelper(pKeyInfo);
 
-            SKeyInfo mKeyInfo = new SKeyInfo();
+            /*SKeyInfo mKeyInfo = new SKeyInfo();
             mKeyInfo.setPublicKeyName("platform_public_key");
             mKeyInfo.setPublicKeyPath("classpath:keys/platform_public_key.pem");
             mKeyInfo.setPrivateKeyName("app_private_key");
             mKeyInfo.setPrivateKeyPath("classpath:keys/app_private_key.pem");
-            MSecurityHelper mSecurityHelper = new MSecurityHelper(mKeyInfo);
+            MSecurityHelper mSecurityHelper = new MSecurityHelper(mKeyInfo);*/
 
             // merchant encode
-            encodeDemo(mSecurityHelper);
+//            encodeDemo(mSecurityHelper);
             // platform decode
 //            decodeDemo(securityHelper);
 
@@ -55,7 +55,6 @@ public class SecurityDemo {
     public static SecurityRequest encodeDemo(MSecurityHelper MSecurityHelper) throws EncodeDecodeException {
         SecurityRequest request = new SecurityRequest<Map<String, Object>>();
         request.setMerchantNo("kltb101");
-        request.setAppId("10101");
         request.setRequestFlowNo("10101" + System.currentTimeMillis());
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("userName", "张三");

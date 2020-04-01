@@ -23,11 +23,6 @@ public class SecurityRequest<T> extends BaseReq {
     private String merchantNo;
 
     /**
-     * 商户接入应用ID
-     */
-    private String appId;
-
-    /**
      * 版本号
      */
     private String version;
@@ -147,14 +142,6 @@ public class SecurityRequest<T> extends BaseReq {
 
     public void setBizObject(T bizObject) {
         this.setBizContent(JSONObject.toJSONString(bizObject));
-    }
-
-    public String getAppId() {
-        return appId;
-    }
-
-    public void setAppId(String appId) {
-        this.appId = appId;
     }
 
     public String getMerchantNo() {
