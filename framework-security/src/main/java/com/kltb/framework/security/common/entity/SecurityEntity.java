@@ -14,7 +14,7 @@ import java.io.Serializable;
  * @descript: 安全加解密基础属性类
  * @date: 2019/11/07.
  */
-public class BaseReq implements Serializable {
+public class SecurityEntity implements Serializable {
     private static final long serialVersionUID = 2508412489595902775L;
     public static final String DEFALT_ENCODING_UTF8 = "UTF-8";
 
@@ -48,7 +48,7 @@ public class BaseReq implements Serializable {
      */
     private long timestamp;
 
-    public BaseReq() {
+    public SecurityEntity() {
         this.timestamp = System.currentTimeMillis();
     }
 

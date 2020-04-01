@@ -16,7 +16,7 @@ import java.util.*;
  * @date: 2019/11/07.
  * @param <T>
  */
-public class SecurityRequest<T> extends BaseReq {
+public class SecurityRequest<T> extends SecurityEntity {
     /**
      * 商户号
      */

@@ -21,7 +21,7 @@ import java.security.PublicKey;
  * @auth: lichunlin
  * @date: 2019/11/07.
  */
-public class SecurityResponse<T> extends BaseReq {
+public class SecurityResponse<T> extends SecurityEntity {
     private static final long serialVersionUID = -8941299750467897831L;
     private String code;
     private String msg;
