@@ -1,6 +1,5 @@
 package com.kltb.framework.enums;
 
-
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -9,17 +8,21 @@ import org.apache.commons.lang3.StringUtils;
  * @date: 2019/09/05.
  */
 public enum ResultCodeEnum implements IBaseEnum<ResultCodeEnum> {
-
     SUCCESS("200", "成功"),
 
     /**
      * 全局业务异常大类
      */
     EXCEPTION_BUSINESS("100100", "业务异常"),
-
     EXCEPTION_BUSINESS_PARAM_MISS("100101", "参数缺失"),
-
     EXCEPTION_BUSINESS_PARAM_ERROR("100102", "参数错误"),
+    EXCEPTION_BIZ_VALIDATOR_ERROR("100103", "业务参校验不通过"),
+    EXCEPTION_BIZ_CHECK_ERROR("100104", "业务数据检查异常"),
+
+    EB_OPT_DATA("100130", "数据操作异常"),
+    EB_DATA_UPDATE_FAIL("100131", "数据更新失败"),
+    EB_DATA_QUERY_FAIL("100132", "数据查询失败"),
+    EB_DATA_INSERT_FAIL("100133", "数据保存失败"),
 
     /**
      * 代码出现异常
@@ -32,21 +35,21 @@ public enum ResultCodeEnum implements IBaseEnum<ResultCodeEnum> {
      * 调用远程接口出现异常
      */
     EXCEPTION_RPC("100400", "远程服务调用异常"),
-
-    /**
-     * 调用远程接口正常返回数据，但是返回数据出现错误
-     */
     EXCEPTION_RPC_RSP_ERROR("100401", "远程服务调用返回的业务数据错误"),
-
-    EXCEPTION_CACHE("100500", "缓存服务异常"),
+    EXCEPTION_RPC_RISK("100401", "风控远程调用错误"),
+    EXCEPTION_RPC_MQ("100402", "MQ收发消息异常"),
 
     /**
-     * 这是个业务异常的一个小类
+     * 相关组件异常
+     */
+    EXCEPTION_CACHE("100501", "缓存服务异常"),
+
+    /**
+     * 业务异常小类
      */
     EXCEPTION_INVALIDE_REQ("100700", "无效的请求"),
 
-    EXCEPTION_SECURITY("00900", "安全错误"),
-
+    EXCEPTION_SECURITY("100900", "安全错误"),
     ;
 
     private String key;
@@ -65,6 +68,16 @@ public enum ResultCodeEnum implements IBaseEnum<ResultCodeEnum> {
     @Override
     public String getValue() {
         return this.value;
+    }
+
+    public static ResultCodeEnum judgeValue(String code) {
+        ResultCodeEnum[] codes = ResultCodeEnum.values();
+        for (ResultCodeEnum thisCode : codes) {
+            if (thisCode.getKey().equals(code)) {
+                return thisCode;
+            }
+        }
+        return null;
     }
 
     @Override
