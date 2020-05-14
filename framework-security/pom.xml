@@ -9,7 +9,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.ft.framework</groupId>
     <artifactId>ftframework-security</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <name>ftframework-security</name>
     <description>安全模块</description>
 

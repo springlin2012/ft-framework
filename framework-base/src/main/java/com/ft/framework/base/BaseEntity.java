@@ -2,6 +2,7 @@ package com.ft.framework.base;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.ft.framework.skeleton.PaginatorSevReq;
 
 import java.io.Serializable;
 
@@ -24,5 +25,11 @@ public class BaseEntity implements Serializable {
                 SerializerFeature.WriteNullNumberAsZero,
                 SerializerFeature.WriteNullBooleanAsFalse,
                 SerializerFeature.UseISO8601DateFormat});
+    }
+
+    public static void main(String[] args) {
+        PaginatorSevReq req = new PaginatorSevReq();
+        req.setOrder(23);
+        System.out.println(JSON.toJSONString(req));
     }
 }

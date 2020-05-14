@@ -1,8 +1,6 @@
 package com.ft.framework.security.sdk.security;
 
 import com.ft.framework.security.common.entity.SKeyInfo;
-import com.kltb.framework.security.common.entity.*;
-
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
