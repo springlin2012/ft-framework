@@ -22,7 +22,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <commons-lang3.version>3.7</commons-lang3.version>
         <spring.version>3.2.8.RELEASE</spring.version>
-        <junit.version>4.10</junit.version>
+        <junit.version>4.13.1</junit.version>
         <httpclient.version>4.3.5</httpclient.version>
         <httpcore.version>4.3.2</httpcore.version>
         <guava.version>23.0</guava.version>
